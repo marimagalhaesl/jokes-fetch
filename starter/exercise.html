@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Piadas API Exercise Lab</title>
+  </head>
+  <body>
+    <div id="container">
+      <h1>The Fetch API Exercises</h1>
+      <p>Open the web inspector console to test.</p>
+    </div>
+    <button id="load-joke">Load Jokes</button>
+
+    <form>
+      <input id="setup" placeholder="Part 1"/>
+      <input id="delivery" placeholder="Part 2"/>
+      <button id="submit-joke">Submit Jokes</button>
+    </form>
+
+    <p id="joke"></p>
+    <p id="category"></p>
+  </body>
+  <script>
+
+    const setup = document.getElementById("setup");
+    const delivery = document.getElementById("delivery");
+    const p = document.getElementById("joke");
+    const cat = document.getElementById("category");
+
+    const joke = document.getElementById("load-joke").addEventListener("click", async function(ev){
+      ev.preventDefault();
+      const res = await fetch('https://v2.jokeapi.dev/joke/Programming');
+      const data = await res.json();
+      console.log(data);
+      
+      p.innerText = data.joke;
+      cat.innerText = data.category;
+
+    })
+
+    const submitBtn = document.getElementById("submit-joke").addEventListener("click", async function(ev) {
+      ev.preventDefault();
+      // console.log(setup.value);
+      // console.log(delivery.value);
+      const res = await fetch('https://v2.jokeapi.dev/submit',{
+        method: 'post',
+        body: JSON.stringify({
+          category: "Spooky",
+          type: "twopart",
+          setup: `${setup}`,
+          delivery: `${delivery}`,
+          formatVersion: 3,
+          flags: {
+          nsfw: false,
+          religious: false,
+          political: false,
+          racist: false,
+          sexist: false,
+          explicit: false
+      },
+          safe: true,
+          id: 296,
+          lang: "en"
+          })
+      });
+      const data = await res.json();
+      console.log(data);
+
+    })
+
+    </script>
+</html>
+
